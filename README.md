@@ -8,28 +8,30 @@ vec2 = require "vec2"
 
 vec = vec2.new(x,y)
 
-maths: 
-v = v1 + v2
-v = v1 - v2
-s = v1 * v2 (skalar multiply)
-x = v1/v2 (cross multiply)
-
+|maths:||
+|-|-|
+|v = v1+v2|add|
+|v = v1-v2|subtract|
+|s = v1*v2| skalar multiply|
+|x = v1/v2| cross multiply |
+|v%num|modulo on x,y|
+|v1%v2|vector projection|
+|vec:rotate(angle)|rotation|
 these create a new vector without overriding the old ones
 
-you can also use
-v1%n to do the modulo operation on both components ... for whatever reason
-or v1%v2 to do v1*(v1*v2/v1*v1) vector projection
+|also||
+|-|-|
+|v:add(num / vec)||
+|v:sub(num / vec)||
+|v:scaleup(num)| multiply by num|
+|v:scaledown(num)| divide by num|
 
-also
-v:add(num / vec)
-v:sub(num / vec)
-v:scaleup(num) (multiply by num)
-v:scaledown(num) (divide by num)
 
-vec = vec:rotate(ang)
-
-v1 == v2 will test if x == x and y == y 
-v1 < / >= v2 will test the lengths 
+|vector comparisions||
+|--|--|
+|v1 == v2|x=x,y=y|
+|v1 < v2|length < length|
+|v1 >= v2|length >= length| 
 
 in order to increase the speed when used where jit is off there are functions for
 v:getX() , :getY() , getXY()
