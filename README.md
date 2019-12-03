@@ -8,13 +8,13 @@ vec2 = require "vec2"
 
 vec = vec2.new(x,y)
 
-maths : 
+maths: 
 v = v1 + v2
 v = v1 - v2
 s = v1 * v2 (skalar multiply)
 x = v1/v2 (cross multiply)
 
--- these creates a new vector without overriding the old ones
+these create a new vector without overriding the old ones
 
 you can also use
 v1%n to do the modulo operation on both components ... for whatever reason
