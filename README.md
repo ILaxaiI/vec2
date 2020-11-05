@@ -15,17 +15,17 @@ methods:
   <li>n/Normalise(vec) : returns a/Converts to unitvector</li>
   <li>g/GetNormal(vec) : returns the normal vector to vec</li>
   <li></li>
-  <li>v1+v2 (\__add) / v1:Add(v2) : add 2 vectors</li>
-  <li>v1-v2 (\__sub) / v1:Sub(v2) : subtraction</li>
+  <li>v1+v2 (__add) / v1:Add(v2) : add 2 vectors</li>
+  <li>v1-v2 (__sub) / v1:Sub(v2) : subtraction</li>
   <li></li>
-  <li>v1\*v2 / : dot product</li>
+  <li>v1\*v2 : dot product</li>
   <li>v1/v2 : cross product</li>
   <li>v1%v2 / v1:Project(v2) : projects v2 onto v1</li>
   <li></li>
   <li>s/Scale(number) : multiply the vectors components by number</li>
   <li>d/Div(number) : divide the vectors components by number</li>
   <li></li>
-  <li>v1 = -v1 (\__unm) / v1:Negate() : negates the vector</li>
+  <li>v1 = -v1 (__unm) / v1:Negate() : negates the vector</li>
   <li>r/Rotate(angleinRad) : rotates the vector</li>
  </ul>
  
