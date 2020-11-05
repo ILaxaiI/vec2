@@ -18,7 +18,7 @@ methods:
   <li>v1+v2 (__add) / v1:Add(v2) : add 2 vectors</li>
   <li>v1-v2 (__sub) / v1:Sub(v2) : subtraction</li>
   <li></li>
-  <li>v1\*v2 : dot product</li>
+  <li>v1*v2 : dot product</li>
   <li>v1/v2 : cross product</li>
   <li>v1%v2 / v1:Project(v2) : projects v2 onto v1</li>
   <li></li>
