@@ -8,13 +8,9 @@ vec2 = require "vec2"
 local vec = vec2.new(10,10)
 
 Most methods have a capital 1st letter variant, those modify the original vector instead of creating a new one
-<style>
-  .list = {
-    list-style-type:none;
-  }
-</style>
+
 methods:
- <ul class = "list">
+ <ul style = "list-style-type:none;">
   <li>getLength(vec) : returns its length</li>
   <li>n/Normalise(vec) : returns a/Converts to unitvector</li>
   <li>g/GetNormal(vec) : returns the normal vector to vec</li>
