@@ -1,167 +1,158 @@
-local sqrt = math.sqrt
-local cos,sin = math.cos,math.sin
+--Most functions have a Capital and lower case version
+--the lower case version will create a new vector while the capital version will modify the original
 local ffi = require("ffi")
+
 ffi.cdef("typedef struct {double x,y;} vec2;")
-local vec2 = {}
 
-vec2.mt = {}
-vec2.mt.__index = vec2.mt
+local mt = {}
+mt.__index = mt
 
-function vec2.new(x,y)
- return ffi.new("vec2",x,y)
-end
+local vec2 = {new = ffi.typeof("vec2")}
+vec2.mt = mt
 
 
 --lenght
-function vec2.mt:getLength()
-    return sqrt(self.x^2+self.y^2)
+local sqrt = math.sqrt
+function mt:getLength()
+  return sqrt(self.x^2+self.y^2)
 end
 
 --transform to unit vector
-function vec2.mt:normalise()
-  if self.x == 0 and self.y == 0 then
-    return vec2.new(0,0)
-  else
+function mt:normalise()
+  if self.x ~= 0 or self.y ~= 0 then
     local l = self:getLength()
     return vec2.new(self.x/l,self.y/l)
+  else
+    return vec2.new(0,0)
   end
+end
+
+function mt:Normalise()
+  if self.x ~= 0 or self.y ~= 0 then
+    local l = self:getLength()
+    self.x,self.y = self.x/l,self.y/l
+  end
+  return self
 end
 
 --returns normal vector
-function vec2.mt:getNormal()
+function mt:getNormal()
   return vec2.new(-self.y,self.x)
 end
 
+function mt:GetNormal()
+  self.x,self.y = -self.y,self.x
+  return self
+end
+
 --for printing
-function vec2.mt.__tostring(vec)
-  return "x= "..vec.x..", y= "..vec.y
+local formstr = "Vector(%.2f, %.2f)"
+function mt.__tostring(vec)
+  return formstr:format(vec.x,vec.y)
 end
 
 --adding 2 vectors
-function vec2.mt.__add(v1,v2)
-  if ffi.istype("vec2",v2) then
+function mt.__add(v1,v2)
     return vec2.new(v1.x+v2.x,v1.y+v2.y)
-  elseif type(v2) == "number" then
-    return vec2.new(v1.x+v2,v1.y+v2)
-  end
 end
 
-function vec2.mt:add(v2)
-  if ffi.istype("vec2",v2) then
+function mt:Add(v2)
     self.x = self.x+v2.x
     self.y = self.y+v2.y
-  elseif type(v2) == "number" then
-    self.x = self.x+v2
-    self.y = self.y+v2
-  end
+    return self
 end
-
 
 --subtracting vectors
-function vec2.mt.__sub(v1,v2)
-  if ffi.istype("vec2",v2) then
+function mt.__sub(v1,v2)
     return vec2.new(v1.x-v2.x,v1.y-v2.y)
-  elseif type(v2) == "number" then
-    return vec2.new(v1.x-v2,v1.y-v2)
-  end
 end
 
-function vec2.mt:sub(v2)
-  if ffi.istype("vec2",v2) then
+function mt:Sub(v2)
     self.x = self.x-v2.x
     self.y = self.y-v2.y
-  elseif type(v2) == "number" then
-    self.x = self.x-v2
-    self.y = self.y-v2
-  end
+    return self
 end
 
-
---multiplying a vector buy a number or Dot product
-function vec2.mt.__mul(a,b)
-  if ffi.istype("vec2",b) and type(a) == "number" then 
-    return vec2.new(a*b.x,a*b.y)
-  elseif ffi.istype("vec2",a) and type(b) == "number" then
-    return vec2.new(b*a.x,b*a.y)
-  elseif ffi.istype("vec2",a) and ffi.istype("vec2",b) then
-    return a.x*b.x+a.y*b.y
-  end
+-- Dot product of 2 vectors
+function mt.__mul(a,b)
+  return a.x*b.x+a.y*b.y
 end
 
-function vec2.mt:scaleup(s)
-  if type(s) == "number" then
-    self.x = self.x*s
-    self.y = self.y*s
-  end
+--Cross product
+function mt.__div(a,b)
+  return a.x*b.y - a.y*b.x
 end
 
-
---dividing a vector by a number or Cross product
-function vec2.mt.__div(a,b)
-  if ffi.istype("vec2",a) and type(b) == "number"  then
-    return vec2.new(a.x/b,a.y/b)
-  elseif ffi.istype("vec2",a) and ffi.istype("vec2",b) then
-    return a.x*b.y - a.y*b.x
-  end  
+function mt:scale(s)
+  return vec2.new(self.x*s,self.y*s)
 end
 
-function vec2.mt:scaledown(s)
-  if type(s) == "number" then
-    self.x = self.x/s
-    self.y = self.y/s
-  end
+function mt:Scale(s)
+  self.x,self.y = self.x*s,self.y*s
+  return self
 end
 
-
---do mod operation on both coordinates, or project b onto a 
-function vec2.mt.__mod(a,b)
-  if ffi.istype("vec2",a) and type(b) == "number" then
-    return vec2.new(a.x%b,a.y%b)
-  elseif ffi.istype("vec2",a) and ffi.istype("vec2",b) then
-    if a.x == 0 and a.y == 0 then 
-      return vec2.new(0,0)
-    else
-      return a*((a*b)/(a*a))
-    end
-  end
+function mt:div(s)
+  return vec2.new(self.x/s,self.y/s)
 end
 
-function vec2.mt.__unm(v)
+function mt:Div(s)
+  self.x,self.y  = self.x/s,self.y/s
+  return self
+end
+
+--project b onto a
+function mt.__mod(a,b)
+  return a:scale((a*b)/(a*a))
+end
+
+function mt:Project(b)
+  self:Scale((self*b)/(self*self))
+  return self
+end
+
+function mt.__unm(v)
   return vec2.new(-v.y,-v.y)
 end
+mt.negate = vec2.mt.__unm
 
-function vec2.mt:rotate(a)  
+function mt:Negate()
+    self.x = -self.s
+    self.y = -self.y
+    return self
+end
+
+local cos,sin = math.cos,math.sin
+function mt:rotate(a)
   local u, v = self.x, self.y
   local c, s = cos(a), sin(a)
   return vec2.new(u*c - v*s,u*s + v*c)
 end
 
+function mt:Rotate(a)
+    local u, v = self.x, self.y
+    local c, s = cos(a), sin(a)
+    self.x,self.y = u*c - v*s,u*s + v*c
+    return self
+end
 
-function vec2.mt.__eq(v1,v2)
+function mt.__eq(v1,v2)
   return (v1.x == v2.x and v1.y == v2.y)
 end
 
-function vec2.mt.__lt(v1,v2)
+function mt.__lt(v1,v2)
   return v1:getLength() < v2:getLength()
 end
 
-function vec2.mt.__le(v1,v2)
+function mt.__le(v1,v2)
   return v1:getLenght() <= v2:getLength()
 end
 
-function vec2.mt:getX()
-  return self.x
+if love then
+  function mt:draw(x,y)
+    love.graphics.line(x,y,x+self.x,y+self.y)
+  end
 end
-
-function vec2.mt:getY()
-  return self.y
-end
-
-function vec2.mt:getXY()
-  return self.x,self.y
-end
-
 
 ffi.metatype("vec2",vec2.mt)
-
 return vec2
