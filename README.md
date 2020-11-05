@@ -5,33 +5,36 @@ This was written in the Love game engine, wich uses luajit
 
 usage:
 vec2 = require "vec2"
+local vec = vec2.new(10,10)
 
-vec = vec2.new(x,y)
-
-|maths:||
-|-|-|
-|v = v1+v2|add|
-|v = v1-v2|subtract|
-|s = v1*v2| skalar multiply|
-|x = v1/v2| cross multiply |
-|v%num|modulo on x,y|
-|v1%v2|vector projection|
-|vec:rotate(angle)|rotation|
-these create a new vector without overriding the old ones
-
-|also||
-|-|-|
-|v:add(num / vec)||
-|v:sub(num / vec)||
-|v:scaleup(num)| multiply by num|
-|v:scaledown(num)| divide by num|
-
-
-|vector comparisions||
-|--|--|
-|v1 == v2|x=x,y=y|
-|v1 < v2|length < length|
-|v1 >= v2|length >= length| 
-
-in order to increase the speed when used where jit is off there are functions for
-v:getX() , :getY() , getXY()
+Most methods have a capital 1st letter variant, those modify the original vector instead of creating a new one
+<style>
+  .list = {
+    list-style-type:none;
+  }
+</style>
+methods:
+ <ul class = "list">
+  <li>getLength(vec) : returns its length</li>
+  <li>n/Normalise(vec) : returns a/Converts to unitvector</li>
+  <li>g/GetNormal(vec) : returns the normal vector to vec</li>
+  <li></li>
+  <li>v1+v2 (\__add) / v1:Add(v2) : add 2 vectors</li>
+  <li>v1-v2 (\__sub) / v1:Sub(v2) : subtraction</li>
+  <li></li>
+  <li>v1\*v2 / : dot product</li>
+  <li>v1/v2 : cross product</li>
+  <li>v1%v2 / v1:Project(v2) : projects v2 onto v1</li>
+  <li></li>
+  <li>s/Scale(number) : multiply the vectors components by number</li>
+  <li>d/Div(number) : divide the vectors components by number</li>
+  <li></li>
+  <li>v1 = -v1 (\__unm) / v1:Negate() : negates the vector</li>
+  <li>r/Rotate(angleinRad) : rotates the vector</li>
+ </ul>
+ 
+ comparision:
+ <ul style = "list-style-type:none;">
+  <li>v1 == v2 : checks if both coordinates are the same</li>
+  <li>v1 <,<= v2 : compares getLength of the vectors</li>
+ <ul>
